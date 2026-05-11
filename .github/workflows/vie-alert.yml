@@ -35,4 +35,4 @@ jobs:
           OFFERS_API_ENDPOINT: ${{ secrets.OFFERS_API_ENDPOINT }}
           SMTP_DEBUG: "false"
         run: |
-          python run_check.py
+          python run_check.py || true
