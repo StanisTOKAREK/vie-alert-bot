@@ -223,14 +223,16 @@ def run_check(url: str, state_path: str, to_email: str, dry_run: bool, force_sen
 
     if hourly:
         # Send hourly recap regardless (always send on hourly mode)
-        subject = f"Récap horaire V.I.E - {checked_at}"
+        num_offers = len(current_offers)
+        subject = f"Récap horaire V.I.E ({num_offers} offres) - {checked_at}"
         body = build_daily_email_body(added_offers, list(current_offers.values()))
     elif daily:
         if last_daily_sent == today and not force_send:
             save_state(state_path, current_offers, checked_at, last_daily_sent)
             return 0
 
-        subject = f"Récap V.I.E {today}"
+        num_offers = len(current_offers)
+        subject = f"Récap V.I.E ({num_offers} offres) - {today}"
         body = build_daily_email_body(added_offers, list(current_offers.values()))
         last_daily_sent = today
     else:
