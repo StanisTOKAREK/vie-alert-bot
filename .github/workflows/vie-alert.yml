@@ -4,11 +4,6 @@ on:
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
-    inputs:
-      force_send:
-        description: "Force email even without new offers"
-        required: false
-        default: "false"
 
 jobs:
   run:
@@ -39,9 +34,4 @@ jobs:
           SMTP_STARTTLS: ${{ secrets.SMTP_STARTTLS }}
           OFFERS_API_ENDPOINT: ${{ secrets.OFFERS_API_ENDPOINT }}
           SMTP_DEBUG: "false"
-        run: |
-          if [ "${{ github.event.inputs.force_send }}" = "true" ]; then
-            python run_check.py --force-send || true
-          else
-            python run_check.py || true
-          fi
+        run: python run_check.py --force-send || true
