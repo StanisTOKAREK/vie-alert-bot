@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.stanis.vie-alert</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/python3.11</string>
+        <string>/Users/mac-STOKAR50/Documents/dev/vie-alert-bot/run_check.py</string>
+        <string>--hourly</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Users/mac-STOKAR50/Documents/dev/vie-alert-bot</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>SMTP_HOST</key>
+        <string>in-v3.mailjet.com</string>
+        <key>SMTP_PORT</key>
+        <string>587</string>
+        <key>SMTP_USER</key>
+        <string>ea3f47243fce8391261d1ff3ff350606</string>
+        <key>SMTP_PASS</key>
+        <string>7f129ef1ebc65c8afb32542a3dced58a</string>
+        <key>SMTP_FROM</key>
+        <string>stanis.tokarek@gmail.com</string>
+        <key>SMTP_TO</key>
+        <string>stanis.tokarek@gmail.com</string>
+        <key>SMTP_STARTTLS</key>
+        <string>true</string>
+        <key>OFFERS_API_ENDPOINT</key>
+        <string>https://civiweb-api-prd.azurewebsites.net/api/Offers/search</string>
+    </dict>
+    
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/mac-STOKAR50/Library/Logs/vie-alert-bot.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/mac-STOKAR50/Library/Logs/vie-alert-bot-error.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
