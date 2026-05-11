@@ -3,9 +3,6 @@ name: vie-alert
 on:
   schedule:
     - cron: "0 * * * *"
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -38,3 +35,11 @@ jobs:
           OFFERS_API_ENDPOINT: ${{ secrets.OFFERS_API_ENDPOINT }}
           SMTP_DEBUG: "false"
         run: python run_check.py --hourly || true
+
+      - name: Commit state changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/state.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update state [skip ci]"
+          git push || true
