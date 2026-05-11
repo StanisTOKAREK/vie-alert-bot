@@ -201,7 +201,7 @@ def send_email(subject: str, body: str, to_email: str) -> None:
         server.send_message(message)
 
 
-def run_check(url: str, state_path: str, to_email: str, dry_run: bool, force_send: bool, daily: bool) -> int:
+def run_check(url: str, state_path: str, to_email: str, dry_run: bool, force_send: bool, daily: bool, hourly: bool) -> int:
     try:
         offers = fetch_offers_from_api(url)
     except Exception:
@@ -221,7 +221,11 @@ def run_check(url: str, state_path: str, to_email: str, dry_run: bool, force_sen
     last_daily_sent = state.get("last_daily_sent")
     today = date.today().isoformat()
 
-    if daily:
+    if hourly:
+        # Send hourly recap regardless (always send on hourly mode)
+        subject = f"Récap horaire V.I.E - {checked_at}"
+        body = build_daily_email_body(added_offers, list(current_offers.values()))
+    elif daily:
         if last_daily_sent == today and not force_send:
             save_state(state_path, current_offers, checked_at, last_daily_sent)
             return 0
@@ -255,6 +259,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force-send", action="store_true")
     parser.add_argument("--daily", action="store_true")
+    parser.add_argument("--hourly", action="store_true")
     return parser.parse_args()
 
 
@@ -263,7 +268,7 @@ def main() -> int:
     args = parse_args()
     if not args.to:
         raise RuntimeError("Aucune adresse destinataire. Renseigne SMTP_TO ou --to.")
-    return run_check(args.url, args.state, args.to, args.dry_run, args.force_send, args.daily)
+    return run_check(args.url, args.state, args.to, args.dry_run, args.force_send, args.daily, args.hourly)
 
 
 if __name__ == "__main__":
