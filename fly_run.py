@@ -22,13 +22,21 @@ def seconds_until_next_hour(now: datetime) -> float:
     return (next_hour - now).total_seconds()
 
 
+DAILY_DIGEST_HOUR_UTC = 6  # 8h Paris (UTC+2 en été)
+
+
 def run_bot_loop():
     while True:
-        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
-        print(f"[{timestamp}] Running bot check...", flush=True)
+        now = datetime.now()
+        timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
+        # Daily digest at 8h Paris (6h UTC); alert-only mode the rest of the time
+        args = ["python", "/app/run_check.py"]
+        if now.hour == DAILY_DIGEST_HOUR_UTC:
+            args.append("--daily")
+        print(f"[{timestamp}] Running bot check ({' '.join(args[2:] or ['alert-only'])})...", flush=True)
         try:
             result = subprocess.run(
-                ["python", "/app/run_check.py", "--hourly"],
+                args,
                 capture_output=True,
                 text=True,
                 check=False,
